@@ -1,0 +1,20 @@
+Створи React-додаток, де потрібно передати ім’я користувача через Context.
+
+Умова:
+
+Є користувач:
+
+{name: "Anna"}
+
+Потрібно:
+
+Створити UserContext
+У App передати користувача через Provider
+У компоненті Profile отримати дані через useContext
+Вивести:
+Hello, Anna
+Структура
+src/
+  App.jsx
+  Profile.jsx
+  UserContext.js

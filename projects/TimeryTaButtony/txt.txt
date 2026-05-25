@@ -1,0 +1,77 @@
+import React, { Component } from "react";
+
+class Users extends Component {
+  state = {
+    users: [],
+    query: "",
+    loading: false,
+  };
+
+  componentDidMount() {
+    this.fetchUsers();
+
+    this.intervalId = setInterval(() => {
+      this.fetchUsers();
+    }, 5000);
+
+    console.log("Mounted");
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.query !== this.state.query) {
+      this.fetchUsers();
+    }
+
+    if (prevState.users !== this.state.users) {
+      localStorage.setItem("users", JSON.stringify(this.state.users));
+    }
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.intervalId);
+    console.log("Unmounted");
+  }
+
+  fetchUsers = () => {
+    this.setState({ loading: true });
+
+    // фейковий запит
+    setTimeout(() => {
+      const data = [
+        { id: 1, name: "John" },
+        { id: 2, name: "Anna" },
+        { id: 3, name: "Mike" },
+      ].filter(user =>
+        user.name.toLowerCase().includes(this.state.query.toLowerCase())
+      );
+
+      this.setState({ users: data, loading: false });
+    }, 500);
+  };
+
+  handleChange = (e) => {
+    this.setState({ query: e.target.value });
+  };
+
+  render() {
+    return (
+      <div>
+        <input
+          value={this.state.query}
+          onChange={this.handleChange}
+          placeholder="Search..."
+        />
+
+        {this.state.loading && <p>Loading...</p>}
+
+        <ul>
+          {this.state.users.map(user => (
+            <li key={user.id}>{user.name}</li>
+          ))}
+        </ul>
+      </div>
+    );
+  }
+}
+
+export default Users;
